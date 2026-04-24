@@ -1,4 +1,5 @@
 import os
+import json
 from supabase import create_client, Client
 from datetime import datetime, timedelta
 
@@ -92,7 +93,8 @@ async def salvar_post(dados: dict) -> dict:
     res = get_client().table("posts_gerados").insert({
         "tema": dados.get("tema"),
         "tipo": "pack_diario",
-        "texto_gerado": str(dados),
+        "texto_gerado": json.dumps(dados, ensure_ascii=False),
+        "hashtags": dados.get("hashtags", ""),
         "status": "pendente",
     }).execute()
     return res.data[0] if res.data else {}
