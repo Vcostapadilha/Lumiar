@@ -60,6 +60,7 @@ async def gerar_json_com_pdfs(system_prompt: str, contexto: str, pdf_urls: list[
                 text = text[4:]
         return json.loads(text)
     except Exception as e:
+        print(f"[gemini] gerar_json_com_pdfs erro: {e}")
         return {"tema": "erro", "erro": str(e)}
 
 
@@ -75,4 +76,5 @@ async def gerar_json(system_prompt: str, contexto: str) -> dict:
                 text = text[4:]
         return json.loads(text)
     except Exception as e:
+        print(f"[gemini] gerar_json erro: {e}")
         return {"tema": "erro", "erro": str(e)}
