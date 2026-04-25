@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Clínica Lumiar — Especialistas em TEA | Tramandaí RS",
+  description: "Clínica especializada em TEA e desenvolvimento infantil em Tramandaí RS. Equipe multidisciplinar, atendimento humanizado e plano terapêutico individualizado.",
 };
 
 const WA_LINK =
@@ -24,16 +25,17 @@ function WABtn({ children, className }: { children: React.ReactNode; className?:
 // ── Header ───────────────────────────────────────────────────────────────────
 function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 shadow-sm" style={{
+      background: "linear-gradient(135deg, #F0E4D0 0%, #F5EAD8 20%, #EDE8F0 45%, #E8F0E8 70%, #F0E8D8 100%)",
+    }}>
+      <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
         <img
           src="/images/lumiarlogo.png"
           alt="Clínica Lumiar — Espaço Terapêutico Infantil"
-          className="h-11 w-auto object-contain"
+          className="h-16 w-auto object-contain"
+          style={{ mixBlendMode: "multiply" }}
         />
-
-        {/* WA #1 */}
-        <WABtn className="flex items-center gap-2 px-4 py-2.5 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-sm rounded-full transition-all shadow-md hover:shadow-lg">
+        <WABtn className="flex items-center gap-2 px-5 py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-sm rounded-full transition-all shadow-md hover:shadow-lg">
           {WA_ICON}
           <span className="hidden sm:block">Falar no WhatsApp</span>
           <span className="sm:hidden">WhatsApp</span>
@@ -46,68 +48,61 @@ function Header() {
 // ── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-creme pt-14 pb-20 md:pt-20 md:pb-28">
-      {/* Blobs decorativos */}
-      <div className="absolute -top-24 -right-24 w-[450px] h-[450px] rounded-full bg-lilas opacity-25 blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 -left-40 w-[350px] h-[350px] rounded-full bg-amarelo opacity-20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[280px] h-[280px] rounded-full bg-verde opacity-15 blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden pt-14 pb-20 md:pt-20 md:pb-28" style={{
+      background: "linear-gradient(160deg, #F0E4D0 0%, #F5EAD8 30%, #EDE8F0 60%, #F0F5E8 100%)",
+    }}>
+      <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #C9B8E8, transparent)" }} />
+      <div className="absolute bottom-0 -left-20 w-72 h-72 rounded-full opacity-15 blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, #6DBE6D, transparent)" }} />
 
       <div className="max-w-6xl mx-auto px-4 relative">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Copy */}
-          <div className="animate-fade-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-lilas/30 rounded-full mb-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ background: "rgba(201,184,232,0.3)", border: "1px solid rgba(201,184,232,0.5)" }}>
               <span className="w-2 h-2 rounded-full bg-verde animate-pulse" />
-              <span className="text-sm font-body font-semibold text-purple-700">
+              <span className="text-sm font-body font-semibold" style={{ color: "#5b4a8a" }}>
                 Especialistas em TEA · Tramandaí RS
               </span>
             </div>
 
             <h1 className="font-display font-bold text-4xl md:text-5xl leading-tight text-gray-900 mb-5">
-              Você sabe que seu filho precisa de apoio especial.{" "}
-              <span className="text-laranja">Aqui, você finalmente vai ser ouvida.</span>
+              Seu filho tem um jeito único de aprender.{" "}
+              <span style={{ background: "linear-gradient(90deg, #F5A623, #F9D342)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                A Lumiar sabe como caminhar com ele.
+              </span>
             </h1>
 
             <p className="text-gray-600 font-body text-lg leading-relaxed mb-8">
-              A Clínica Lumiar é especializada em TEA e desenvolvimento infantil. Com escuta ativa, carinho real e
-              equipe multidisciplinar, traçamos um caminho de progresso feito para o{" "}
-              <em className="font-semibold not-italic text-gray-800">seu</em> filho.
+              Somos especializados em TEA e desenvolvimento infantil. Com escuta real, carinho genuíno e equipe multidisciplinar integrada, traçamos um caminho de evolução feito para o seu filho.
             </p>
 
-            {/* WA #2 */}
-            <WABtn className="inline-flex items-center gap-3 px-8 py-4 bg-laranja hover:bg-amber-500 text-white font-display font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 animate-pulse-wa">
+            <WABtn className="inline-flex items-center gap-3 px-8 py-4 text-white font-display font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5" style={{ background: "#F5A623" }}>
               {WA_ICON}
               Quero agendar uma avaliação
             </WABtn>
 
             <p className="mt-4 text-sm text-gray-400 font-body">
-              ✓ Sem burocracia &nbsp;·&nbsp; ✓ Atendimento humanizado &nbsp;·&nbsp; ✓ Equipe especializada em TEA
+              Sem burocracia &nbsp;·&nbsp; Atendimento humanizado &nbsp;·&nbsp; Equipe especializada em TEA
             </p>
           </div>
 
-          {/* Foto 1 */}
-          <div className="relative animate-fade-up-2">
+          <div className="relative">
             <div
-              className="relative rounded-3xl overflow-hidden aspect-[4/3] border-4 border-white shadow-2xl"
-              style={{ background: "linear-gradient(135deg, #C9B8E8 0%, #6DBE6D40 50%, #F9D342 100%)" }}
+              className="relative rounded-3xl overflow-hidden aspect-[4/3] border-4 border-white shadow-2xl flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #C9B8E840 0%, #6DBE6D30 50%, #F9D34240 100%)" }}
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('/images/espaco1.jpg')" }}
-              />
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/espaco1.jpg')" }} />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="bg-white/75 backdrop-blur-sm rounded-xl px-3 py-1.5 text-xs text-gray-500 font-body">
+                <span className="bg-white/70 backdrop-blur-sm rounded-xl px-3 py-1.5 text-xs text-gray-500 font-body">
                   📸 espaco1.jpg
                 </span>
               </div>
             </div>
-            {/* Dots decorativos */}
-            <div className="absolute -bottom-5 -left-5 grid grid-cols-4 gap-1.5">
+            <div className="absolute -bottom-4 -left-4 grid grid-cols-4 gap-1.5">
               {Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className="w-1.5 h-1.5 rounded-full bg-laranja opacity-40" />
               ))}
             </div>
-            <div className="absolute -top-4 -right-4 w-14 h-14 rounded-full bg-amarelo opacity-70 shadow-lg" />
+            <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full bg-amarelo opacity-70 shadow-lg" />
           </div>
         </div>
       </div>
@@ -115,22 +110,83 @@ function Hero() {
   );
 }
 
-// ── Prova — números ───────────────────────────────────────────────────────────
-function ProvaNumeros() {
+// ── Depoimento imediato ───────────────────────────────────────────────────────
+function DepoimentoHero() {
+  return (
+    <section className="bg-white py-8 border-y border-gray-100">
+      <div className="max-w-3xl mx-auto px-4 flex items-center gap-5">
+        <div className="w-14 h-14 rounded-full flex-shrink-0 flex items-center justify-center font-display font-bold text-white text-xl" style={{ background: "linear-gradient(135deg, #F5A623, #F9D342)" }}>
+          C
+        </div>
+        <div>
+          <div className="text-amarelo text-sm mb-1">★★★★★</div>
+          <p className="font-body text-gray-700 leading-relaxed italic">
+            "Meu filho chegou sem falar quase nada. Hoje ele corre pra me contar o que fez na terapia. A Lumiar mudou a nossa família."
+          </p>
+          <p className="text-xs text-gray-400 font-body mt-1">Camila R. — mãe do Lorenzo, 5 anos · Google</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Vídeo ─────────────────────────────────────────────────────────────────────
+function Video() {
+  return (
+    <section className="bg-creme py-16 md:py-20">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">Conheça a Lumiar</span>
+            <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-4 leading-tight">
+              Veja como é um dia aqui dentro
+            </h2>
+            <p className="text-gray-500 font-body text-lg leading-relaxed">
+              Um espaço pensado para crianças, com cor, cuidado e profissionais que amam o que fazem. Veja a experiência de estar na Lumiar.
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <div
+              className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl flex items-center justify-center flex-col gap-3"
+              style={{
+                width: "260px",
+                aspectRatio: "9/16",
+                background: "linear-gradient(135deg, #F5A62330, #C9B8E840, #6DBE6D30)",
+              }}
+            >
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/video-thumb.jpg')" }} />
+              <div className="relative z-10 w-16 h-16 rounded-full bg-white/90 shadow-lg flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#F5A623">
+                  <path d="M5 3l14 9-14 9V3z" />
+                </svg>
+              </div>
+              <span className="relative z-10 text-xs text-gray-500 bg-white/70 rounded-lg px-2 py-1 font-body">Vídeo do espaço</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Números ───────────────────────────────────────────────────────────────────
+function Numeros() {
   const nums = [
-    { valor: "5+", label: "Especialistas", bg: "bg-laranja/10", text: "text-orange-700" },
-    { valor: "+300", label: "Crianças atendidas", bg: "bg-verde/20", text: "text-green-700" },
-    { valor: "5 anos", label: "de experiência", bg: "bg-lilas/30", text: "text-purple-700" },
-    { valor: "⭐ 5.0", label: "avaliação Google", bg: "bg-amarelo/40", text: "text-yellow-700" },
+    { valor: "300", sufixo: "+", label: "Crianças atendidas", bg: "bg-laranja/10", text: "text-orange-700" },
+    { valor: "5", sufixo: "+", label: "Especialistas", bg: "bg-verde/20", text: "text-green-700" },
+    { valor: "5", sufixo: " anos", label: "de experiência", bg: "bg-lilas/30", text: "text-purple-700" },
+    { valor: "5.0", sufixo: " ⭐", label: "Avaliação Google", bg: "bg-amarelo/40", text: "text-yellow-700" },
   ];
 
   return (
     <section className="bg-white py-12 border-y border-gray-100">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {nums.map((n, i) => (
             <div key={i} className={`rounded-2xl p-5 text-center ${n.bg} ${n.text}`}>
-              <p className="font-display font-bold text-3xl mb-1">{n.valor}</p>
+              <p className="font-display font-bold text-3xl mb-1 counter" data-target={n.valor} data-sufixo={n.sufixo}>
+                {n.valor}{n.sufixo}
+              </p>
               <p className="font-body text-sm opacity-80">{n.label}</p>
             </div>
           ))}
@@ -144,40 +200,46 @@ function ProvaNumeros() {
 function Especialidades() {
   const items = [
     {
-      icon: "🧩",
       titulo: "Avaliação de TEA",
-      desc: "Diagnóstico humanizado e completo, com orientação para toda a família.",
-      bg: "bg-lilas/20 hover:bg-lilas/40",
+      desc: "Diagnóstico humanizado e completo, com orientação clara para toda a família em cada etapa.",
+      bg: "bg-lilas/20 hover:bg-lilas/35",
+      iconColor: "#5b4a8a",
+      icon: <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44l-1.5-7.5A2.5 2.5 0 0 1 8 9h1.5M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44l1.5-7.5A2.5 2.5 0 0 0 16 9h-1.5" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "🤲",
       titulo: "Terapia Ocupacional",
-      desc: "Desenvolvemos autonomia, coordenação e independência nas atividades do dia a dia.",
-      bg: "bg-verde/20 hover:bg-verde/40",
+      desc: "Autonomia, coordenação e independência nas atividades do dia a dia, com leveza e propósito.",
+      bg: "bg-verde/15 hover:bg-verde/30",
+      iconColor: "#2d7a2d",
+      icon: <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "🌀",
       titulo: "Integração Sensorial",
-      desc: "Entendemos e respeitamos o sistema nervoso único de cada criança.",
-      bg: "bg-amarelo/20 hover:bg-amarelo/40",
+      desc: "Entendemos e respeitamos o sistema nervoso único de cada criança, no ritmo dela.",
+      bg: "bg-amarelo/20 hover:bg-amarelo/35",
+      iconColor: "#7a6200",
+      icon: <><circle cx="12" cy="12" r="3" strokeWidth="2" /><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeWidth="2" strokeLinecap="round" /></>,
     },
     {
-      icon: "💙",
       titulo: "Psicologia Infantil",
-      desc: "Apoio emocional e comportamental com escuta especializada e lúdica.",
-      bg: "bg-blue-100 hover:bg-blue-200",
-    },
-    {
-      icon: "🗣️",
-      titulo: "Fonoaudiologia",
-      desc: "Comunicação, linguagem e oralidade para sua criança se expressar.",
+      desc: "Apoio emocional e comportamental com escuta especializada, lúdica e acolhedora.",
       bg: "bg-laranja/10 hover:bg-laranja/20",
+      iconColor: "#a05000",
+      icon: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "📚",
+      titulo: "Fonoaudiologia",
+      desc: "Comunicação, linguagem e oralidade para que sua criança se expresse com confiança.",
+      bg: "bg-lilas/15 hover:bg-lilas/30",
+      iconColor: "#5b4a8a",
+      icon: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeWidth="2" strokeLinecap="round" />,
+    },
+    {
       titulo: "Psicopedagogia",
-      desc: "Aprendizagem e desenvolvimento cognitivo com estratégias individualizadas.",
-      bg: "bg-pink-100 hover:bg-pink-200",
+      desc: "Aprendizagem e desenvolvimento cognitivo com estratégias feitas para o seu filho.",
+      bg: "bg-verde/10 hover:bg-verde/25",
+      iconColor: "#2d7a2d",
+      icon: <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" strokeWidth="2" strokeLinecap="round" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" strokeWidth="2" strokeLinecap="round" /></>,
     },
   ];
 
@@ -185,17 +247,22 @@ function Especialidades() {
     <section className="bg-creme py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-3">
-            Sua criança está em boas mãos
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">O que oferecemos</span>
+          <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-3 leading-tight">
+            Cada criança tem um caminho.<br />Nós ajudamos a traçá-lo.
           </h2>
           <p className="text-gray-500 font-body text-lg max-w-xl mx-auto">
-            Cuidamos de cada aspecto do desenvolvimento infantil com especialização real.
+            Especialidades integradas que trabalham juntas pelo desenvolvimento do seu filho.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {items.map((item, i) => (
             <div key={i} className={`rounded-2xl p-6 transition-all ${item.bg}`}>
-              <div className="text-3xl mb-3">{item.icon}</div>
+              <div className="w-11 h-11 rounded-xl bg-white/70 flex items-center justify-center mb-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke={item.iconColor} width="22" height="22">
+                  {item.icon}
+                </svg>
+              </div>
               <h3 className="font-display font-bold text-lg text-gray-900 mb-2">{item.titulo}</h3>
               <p className="font-body text-sm text-gray-600 leading-relaxed">{item.desc}</p>
             </div>
@@ -206,38 +273,36 @@ function Especialidades() {
   );
 }
 
-// ── Espaço — fotos ────────────────────────────────────────────────────────────
+// ── Espaço ────────────────────────────────────────────────────────────────────
 function Espaco() {
   const fotos = [
-    { src: "/images/espaco1.jpg", label: "espaco1.jpg", grad: "from-verde/30 to-lilas/30" },
-    { src: "/images/espaco2.jpg", label: "espaco2.jpg", grad: "from-amarelo/30 to-laranja/20" },
-    { src: "/images/espaco3.jpg", label: "espaco3.jpg", grad: "from-lilas/30 to-blue-200/40" },
+    { src: "/images/espaco1.jpg", label: "Sala de atendimento", grad: "from-verde/30 to-lilas/30" },
+    { src: "/images/espaco2.jpg", label: "Área de integração sensorial", grad: "from-amarelo/30 to-laranja/20" },
+    { src: "/images/espaco3.jpg", label: "Recepção", grad: "from-lilas/30 to-blue-200/40" },
   ];
 
   return (
     <section className="bg-white py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-3">
-            Um espaço criado para crianças — e para famílias
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">Nosso espaço</span>
+          <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-3 leading-tight">
+            Um lugar criado para a sua criança
           </h2>
           <p className="text-gray-500 font-body text-lg max-w-xl mx-auto">
-            Cada detalhe foi pensado para acolher sua criança com segurança, cor e cuidado.
+            Cada detalhe foi pensado para acolher com segurança, cor e cuidado.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {fotos.map((foto, i) => (
             <div
               key={i}
               className={`relative rounded-3xl overflow-hidden aspect-[4/3] bg-gradient-to-br ${foto.grad} border-2 border-gray-100 shadow-md`}
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${foto.src}')` }}
-              />
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${foto.src}')` }} />
               <div className="absolute inset-0 flex items-end p-4">
-                <span className="bg-white/75 backdrop-blur-sm rounded-lg px-2.5 py-1 text-xs text-gray-500 font-body">
-                  📸 {foto.label}
+                <span className="bg-white/75 backdrop-blur-sm rounded-lg px-2.5 py-1 text-xs text-gray-600 font-body font-medium">
+                  {foto.label}
                 </span>
               </div>
             </div>
@@ -252,34 +317,46 @@ function Espaco() {
 function Diferenciais() {
   const items = [
     {
-      icon: "💬",
-      titulo: "Agendamento rápido pelo WhatsApp",
-      desc: "Sem formulários complicados. Uma mensagem e nosso time responde em até 1 hora.",
+      titulo: "Resposta em até 1 hora",
+      desc: "Sem formulários. Uma mensagem no WhatsApp e nosso time já está com você.",
+      iconBg: "bg-laranja/10",
+      iconColor: "#a05000",
+      icon: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "👥",
-      titulo: "Equipe integrada e multidisciplinar",
-      desc: "Nossos profissionais trabalham juntos — comunicação constante pelo bem do seu filho.",
+      titulo: "Equipe integrada",
+      desc: "Nossos profissionais conversam entre si. O progresso do seu filho é acompanhado por todos.",
+      iconBg: "bg-verde/15",
+      iconColor: "#2d7a2d",
+      icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" strokeWidth="2" strokeLinecap="round" /><circle cx="9" cy="7" r="4" strokeWidth="2" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" strokeWidth="2" strokeLinecap="round" /></>,
     },
     {
-      icon: "🎯",
-      titulo: "Plano terapêutico individualizado",
+      titulo: "Plano individualizado",
       desc: "Cada criança é única. O plano do seu filho é feito só para ele, não para um protocolo.",
+      iconBg: "bg-lilas/25",
+      iconColor: "#5b4a8a",
+      icon: <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "🏠",
-      titulo: "Ambiente acolhedor e seguro",
-      desc: "Espaço pensado para crianças com necessidades especiais, com recursos sensoriais.",
+      titulo: "Ambiente sensorial",
+      desc: "Espaço pensado para crianças com necessidades especiais, com recursos sensoriais e segurança.",
+      iconBg: "bg-amarelo/20",
+      iconColor: "#7a6200",
+      icon: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" strokeWidth="2" strokeLinecap="round" /><polyline points="9 22 9 12 15 12 15 22" strokeWidth="2" strokeLinecap="round" /></>,
     },
     {
-      icon: "📲",
       titulo: "Família sempre informada",
       desc: "Você acompanha cada passo do progresso. Comunicação clara e frequente com os pais.",
+      iconBg: "bg-laranja/10",
+      iconColor: "#a05000",
+      icon: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.42 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.87a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" strokeWidth="2" strokeLinecap="round" />,
     },
     {
-      icon: "💛",
       titulo: "Atendimento humanizado",
-      desc: "Tratamos seu filho — e você — com o cuidado, paciência e empatia que vocês merecem.",
+      desc: "Tratamos seu filho e você com o cuidado e a empatia que vocês merecem.",
+      iconBg: "bg-verde/15",
+      iconColor: "#2d7a2d",
+      icon: <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" strokeWidth="2" strokeLinecap="round" />,
     },
   ];
 
@@ -287,17 +364,19 @@ function Diferenciais() {
     <section className="bg-creme py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">Por que a Lumiar</span>
           <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-3">
-            Por que as famílias escolhem a Lumiar
+            O que torna nossa abordagem diferente
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {items.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all"
-            >
-              <div className="text-2xl mb-3">{item.icon}</div>
+            <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+              <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center mb-4`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke={item.iconColor} width="22" height="22">
+                  {item.icon}
+                </svg>
+              </div>
               <h3 className="font-display font-bold text-base text-gray-900 mb-2">{item.titulo}</h3>
               <p className="font-body text-sm text-gray-500 leading-relaxed">{item.desc}</p>
             </div>
@@ -308,26 +387,83 @@ function Diferenciais() {
   );
 }
 
-// ── Depoimento ────────────────────────────────────────────────────────────────
-function Depoimento() {
-  return (
-    <section className="bg-laranja py-16 md:py-20 relative overflow-hidden">
-      <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-white opacity-5 pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-white opacity-5 pointer-events-none" />
+// ── Depoimentos ───────────────────────────────────────────────────────────────
+function Depoimentos() {
+  const deps = [
+    {
+      inicial: "C",
+      nome: "Camila R.",
+      info: "Mãe do Lorenzo, 5 anos",
+      texto: "Meu filho chegou sem falar quase nada. Hoje ele corre pra me contar o que fez na terapia. A Lumiar mudou a nossa família.",
+      grad: "from-laranja to-amarelo",
+    },
+    {
+      inicial: "A",
+      nome: "Ana Paula M.",
+      info: "Mãe da Sofia, 4 anos",
+      texto: "Desde o primeiro dia me senti acolhida. Não apenas meu filho, eu também. É raro encontrar isso numa clínica.",
+      grad: "from-lilas to-verde",
+    },
+    {
+      inicial: "F",
+      nome: "Fernanda L.",
+      info: "Mãe do Pedro, 7 anos",
+      texto: "A equipe é integrada de verdade. Todo mundo sabe o que o outro está fazendo com meu filho. Isso faz toda a diferença.",
+      grad: "from-verde to-lilas",
+    },
+  ];
 
-      <div className="max-w-3xl mx-auto px-4 text-center relative">
-        <div className="font-display text-7xl text-white opacity-30 leading-none mb-2">&ldquo;</div>
-        <p className="font-body text-xl md:text-2xl text-white leading-relaxed mb-8 italic">
-          Eu estava desesperada, sem saber por onde começar. A equipe da Lumiar me acolheu de um jeito que nenhum
-          lugar tinha feito antes. Meu filho mudou muito em poucos meses de terapia.
-        </p>
-        <div className="flex items-center justify-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-display font-bold text-white text-lg">
-            M
-          </div>
-          <div className="text-left">
-            <p className="font-display font-bold text-white">Mariana S.</p>
-            <p className="text-white/70 text-sm font-body">Mãe do Miguel, 4 anos</p>
+  return (
+    <section className="bg-white py-16 md:py-20">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">O que as famílias dizem</span>
+          <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 leading-tight">
+            Histórias reais de quem<br />já caminhou com a gente
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {deps.map((d, i) => (
+            <div key={i} className="rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all">
+              <div className="text-amarelo text-sm mb-4">★★★★★</div>
+              <p className="font-body text-gray-700 leading-relaxed italic mb-6 text-sm">
+                "{d.texto}"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${d.grad} flex items-center justify-center font-display font-bold text-white text-base flex-shrink-0`}>
+                  {d.inicial}
+                </div>
+                <div>
+                  <p className="font-display font-bold text-gray-900 text-sm">{d.nome}</p>
+                  <p className="text-xs text-gray-400 font-body">{d.info}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Convênios ─────────────────────────────────────────────────────────────────
+function Convenios() {
+  const lista = ["Unimed", "Bradesco Saúde", "Postal Saúde", "Cabergs", "CASSI"];
+  return (
+    <section className="bg-creme py-12 border-y border-gray-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-2 block">Rede credenciada</span>
+          <h2 className="font-display font-bold text-2xl text-gray-900">Convênios aceitos</h2>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {lista.map((c, i) => (
+            <div key={i} className="bg-white rounded-xl px-5 py-3 text-sm font-body font-semibold text-gray-600 border border-gray-200 shadow-sm">
+              {c}
+            </div>
+          ))}
+          <div className="bg-white rounded-xl px-5 py-3 text-sm font-body font-semibold text-gray-400 border border-gray-200 shadow-sm">
+            + outros
           </div>
         </div>
       </div>
@@ -335,30 +471,28 @@ function Depoimento() {
   );
 }
 
-// ── CTA do meio ───────────────────────────────────────────────────────────────
+// ── CTA Meio ──────────────────────────────────────────────────────────────────
 function CTAMeio() {
   return (
     <section className="bg-white py-16 md:py-20">
       <div className="max-w-3xl mx-auto px-4 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full mb-6">
-          <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-          <span className="text-sm font-body font-semibold text-red-600">
-            Vagas limitadas — agenda individualizada
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ background: "#FEF3C7", border: "1px solid #F9D342" }}>
+          <span className="w-2 h-2 rounded-full bg-laranja animate-pulse" />
+          <span className="text-sm font-body font-semibold" style={{ color: "#92400E" }}>
+            Agenda individualizada — vagas limitadas por criança
           </span>
         </div>
-        <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-4">
+        <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-4 leading-tight">
           Pronto para dar o primeiro passo?
         </h2>
-        <p className="text-gray-500 font-body text-lg mb-8 max-w-xl mx-auto">
-          Cada criança recebe atenção individualizada — e por isso não conseguimos atender a todos ao mesmo tempo.
-          Garante a vaga do seu filho agora.
+        <p className="text-gray-500 font-body text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+          Cada criança recebe atenção exclusiva. Por isso não conseguimos atender a todos ao mesmo tempo. Garanta a vaga do seu filho agora.
         </p>
-        {/* WA #3 */}
-        <WABtn className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-display font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+        <WABtn className="inline-flex items-center gap-3 px-8 py-4 text-white font-display font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5" style={{ background: "#25D366" }}>
           {WA_ICON}
           Garantir minha vaga no WhatsApp
         </WABtn>
-        <p className="mt-4 text-sm text-gray-400 font-body">Resposta geralmente em menos de 1 hora</p>
+        <p className="mt-4 text-sm text-gray-400 font-body">Resposta em menos de 1 hora · Sem compromisso</p>
       </div>
     </section>
   );
@@ -369,55 +503,43 @@ function FAQ() {
   const perguntas = [
     {
       q: "Meu filho precisa ter diagnóstico de TEA para começar?",
-      a: "Não! Muitas crianças chegam à Clínica Lumiar ainda em processo de investigação. Nossa avaliação ajuda justamente a entender o que seu filho precisa — com ou sem diagnóstico prévio.",
+      a: "Não. Muitas crianças chegam à Lumiar ainda em processo de investigação. Nossa avaliação ajuda justamente a entender o que seu filho precisa, com ou sem diagnóstico prévio.",
     },
     {
       q: "Como funciona a primeira consulta?",
-      a: "A primeira consulta é uma avaliação completa. Ouvimos você, observamos seu filho em um ambiente lúdico e acolhedor, e ao final explicamos tudo o que identificamos e o plano que recomendamos.",
+      a: "A primeira consulta é uma avaliação completa. Ouvimos você, observamos seu filho em um ambiente lúdico e acolhedor e ao final explicamos tudo o que identificamos, com o plano que recomendamos.",
     },
     {
       q: "Vocês atendem plano de saúde?",
-      a: "Entre em contato com a gente pelo WhatsApp para verificarmos se o seu plano tem cobertura para os atendimentos que seu filho precisa.",
+      a: "Entre em contato pelo WhatsApp para verificarmos se o seu plano tem cobertura para os atendimentos que seu filho precisa. Atendemos vários convênios.",
     },
     {
       q: "Com que frequência acontecem as sessões?",
-      a: "A frequência é definida no plano terapêutico individualizado, conforme a necessidade de cada criança. Na avaliação inicial, explicamos tudo com detalhes.",
+      a: "A frequência é definida no plano terapêutico individualizado, conforme a necessidade de cada criança. Na avaliação inicial explicamos tudo com detalhes.",
     },
   ];
 
   return (
     <section className="bg-creme py-16 md:py-20">
       <div className="max-w-3xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-3xl text-gray-900 mb-2">Perguntas frequentes</h2>
-          <p className="text-gray-500 font-body">Tire suas dúvidas antes de agendar</p>
+        <div className="text-center mb-10">
+          <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">Dúvidas frequentes</span>
+          <h2 className="font-display font-bold text-3xl text-gray-900">Tire suas dúvidas antes de agendar</h2>
         </div>
-        <div className="space-y-4">
-          {perguntas.map((perg, i) => (
-            <details
-              key={i}
-              className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-            >
-              <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-display font-bold text-gray-900 list-none hover:bg-gray-50 transition-colors select-none">
-                {perg.q}
+        <div className="space-y-3">
+          {perguntas.map((p, i) => (
+            <details key={i} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer font-display font-bold text-gray-900 list-none select-none">
+                <span>{p.q}</span>
                 <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  className="flex-shrink-0 transition-transform duration-300 group-open:rotate-180"
+                  width="20" height="20" viewBox="0 0 20 20" fill="none"
+                  className="flex-shrink-0 transition-transform duration-300 group-open:rotate-180 text-gray-400"
                 >
-                  <path
-                    d="M5 7.5L10 12.5L15 7.5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </summary>
-              <div className="px-6 pb-5 pt-2 text-gray-600 font-body leading-relaxed border-t border-gray-100">
-                {perg.a}
+              <div className="px-6 pb-5 pt-3 text-gray-600 font-body leading-relaxed border-t border-gray-100 text-sm">
+                {p.a}
               </div>
             </details>
           ))}
@@ -434,52 +556,31 @@ function Localizacao() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
+            <span className="text-xs font-body font-semibold uppercase tracking-widest text-laranja mb-3 block">Onde estamos</span>
             <h2 className="font-display font-bold text-3xl text-gray-900 mb-8">Como nos encontrar</h2>
             <div className="space-y-5">
               {[
-                {
-                  icon: "📍",
-                  bg: "bg-laranja/10",
-                  titulo: "Endereço",
-                  texto: "Av. Protásio Alves 2161, Zona Nova Sul\nTramandaí RS",
-                },
-                {
-                  icon: "🕐",
-                  bg: "bg-verde/20",
-                  titulo: "Horários de atendimento",
-                  texto: "Seg–Sex: 8h–12h e 13h30–18h30\nSábado: 8h–12h e 13h30–18h",
-                },
-                {
-                  icon: "💬",
-                  bg: "bg-lilas/30",
-                  titulo: "WhatsApp",
-                  texto: "(51) 9 9501-2315",
-                },
+                { iconBg: "bg-laranja/10", iconColor: "#a05000", titulo: "Endereço", texto: "Av. Protásio Alves 2161, Zona Nova Sul\nTramandaí RS", icon: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" strokeWidth="2" /><circle cx="12" cy="10" r="3" strokeWidth="2" /></> },
+                { iconBg: "bg-verde/15", iconColor: "#2d7a2d", titulo: "Horários", texto: "Seg a Sex: 8h às 12h e 13h30 às 18h30\nSábado: 8h às 12h e 13h30 às 18h", icon: <><circle cx="12" cy="12" r="10" strokeWidth="2" /><polyline points="12 6 12 12 16 14" strokeWidth="2" strokeLinecap="round" /></> },
+                { iconBg: "bg-lilas/25", iconColor: "#5b4a8a", titulo: "WhatsApp", texto: "(51) 9 9501-2315", icon: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeWidth="2" strokeLinecap="round" /> },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
-                  <div
-                    className={`w-11 h-11 rounded-xl ${item.bg} flex items-center justify-center flex-shrink-0 text-lg`}
-                  >
-                    {item.icon}
+                  <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke={item.iconColor} width="20" height="20">{item.icon}</svg>
                   </div>
                   <div>
-                    <p className="font-body font-semibold text-gray-900 mb-0.5">{item.titulo}</p>
-                    <p className="font-body text-gray-600 text-sm whitespace-pre-line">{item.texto}</p>
+                    <p className="font-body font-semibold text-gray-900 mb-0.5 text-sm">{item.titulo}</p>
+                    <p className="font-body text-gray-500 text-sm whitespace-pre-line">{item.texto}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Mapa Google Maps embed */}
           <div className="rounded-3xl overflow-hidden h-64 border-2 border-gray-100 shadow-md">
             <iframe
               src="https://maps.google.com/maps?q=Av.+Prot%C3%A1sio+Alves+2161,+Tramanda%C3%AD,+RS,+Brasil&output=embed&z=16"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
+              width="100%" height="100%" style={{ border: 0 }}
+              allowFullScreen loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Localização Clínica Lumiar"
             />
@@ -490,24 +591,25 @@ function Localizacao() {
   );
 }
 
-// ── CTA final ─────────────────────────────────────────────────────────────────
+// ── CTA Final ─────────────────────────────────────────────────────────────────
 function CTAFinal() {
   return (
-    <section className="bg-gradient-to-br from-lilas/30 via-creme to-amarelo/20 py-20 md:py-28 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-80 h-80 rounded-full bg-verde opacity-10 blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-laranja opacity-10 blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
-
+    <section className="relative overflow-hidden py-20 md:py-28" style={{
+      background: "linear-gradient(135deg, rgba(201,184,232,0.3) 0%, #FDF9F0 40%, rgba(249,211,66,0.2) 100%)",
+    }}>
+      <div className="absolute top-0 left-0 w-72 h-72 rounded-full opacity-10 blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ background: "#6DBE6D" }} />
+      <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full opacity-10 blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" style={{ background: "#F5A623" }} />
       <div className="max-w-3xl mx-auto px-4 text-center relative">
-        <div className="text-5xl mb-5">🌱</div>
         <h2 className="font-display font-bold text-4xl md:text-5xl text-gray-900 mb-5 leading-tight">
-          Seu filho merece o melhor começo.
+          Seu filho merece um{" "}
+          <span style={{ background: "linear-gradient(90deg, #F5A623, #F9D342)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            começo luminoso.
+          </span>
         </h2>
         <p className="text-gray-600 font-body text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Não deixe para amanhã. Cada dia importa no desenvolvimento da sua criança. Dê o primeiro passo agora
-          — a equipe da Lumiar está pronta para ouvir você.
+          Não deixe para amanhã. Cada dia importa no desenvolvimento da sua criança. A equipe da Lumiar está pronta para ouvir você, sem julgamentos e sem burocracia.
         </p>
-        {/* WA #4 */}
-        <WABtn className="inline-flex items-center gap-3 px-10 py-5 bg-laranja hover:bg-amber-500 text-white font-display font-bold text-xl rounded-3xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
+        <WABtn className="inline-flex items-center gap-3 px-10 py-5 text-white font-display font-bold text-xl rounded-3xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1" style={{ background: "#F5A623" }}>
           {WA_ICON}
           Falar com a Clínica Lumiar
         </WABtn>
@@ -524,30 +626,23 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-8">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        <div className="flex items-center justify-center mb-3">
-          <img
-            src="/images/lumiarlogo.png"
-            alt="Clínica Lumiar"
-            className="h-10 w-auto object-contain rounded-lg"
-          />
-        </div>
+        <img src="/images/lumiarlogo.png" alt="Clínica Lumiar" className="h-12 w-auto object-contain mx-auto mb-3 rounded-xl" style={{ mixBlendMode: "screen" }} />
         <p className="text-xs font-body">Av. Protásio Alves 2161, Zona Nova Sul — Tramandaí RS</p>
-        <p className="text-xs font-body mt-1">
-          © {new Date().getFullYear()} Clínica Lumiar. Todos os direitos reservados.
-        </p>
+        <p className="text-xs font-body mt-1">© {new Date().getFullYear()} Clínica Lumiar. Todos os direitos reservados.</p>
       </div>
     </footer>
   );
 }
 
-// ── Botão flutuante WhatsApp ──────────────────────────────────────────────────
+// ── Floating WA ───────────────────────────────────────────────────────────────
 function FloatingWA() {
   return (
     <a
       href={WA_LINK}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-5 z-50 flex items-center gap-2.5 pl-4 pr-5 py-3.5 bg-[#25D366] hover:bg-[#1ebe5c] text-white rounded-full shadow-2xl transition-all hover:scale-105 animate-pulse-wa"
+      className="fixed bottom-6 right-5 z-50 flex items-center gap-2.5 pl-4 pr-5 py-3.5 text-white rounded-full shadow-2xl transition-all hover:scale-105 animate-pulse-wa"
+      style={{ background: "#25D366" }}
       aria-label="Falar no WhatsApp"
     >
       <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
@@ -565,11 +660,14 @@ export default function LandingPage() {
       <Header />
       <main>
         <Hero />
-        <ProvaNumeros />
+        <DepoimentoHero />
+        <Video />
+        <Numeros />
         <Especialidades />
         <Espaco />
         <Diferenciais />
-        <Depoimento />
+        <Depoimentos />
+        <Convenios />
         <CTAMeio />
         <FAQ />
         <Localizacao />

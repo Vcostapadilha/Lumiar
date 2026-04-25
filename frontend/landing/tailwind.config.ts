@@ -12,10 +12,10 @@ const config: Config = {
         creme: "#FDF9F0",
       },
       fontFamily: {
-        display: ["var(--font-baloo)", "cursive"],
-        body: ["var(--font-nunito)", "sans-serif"],
+        display: ["Fraunces", "serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
       },
-      animation: {
+          animation: {
         "pulse-wa": "pulse-wa 2.5s ease-in-out infinite",
         "fade-up": "fade-up 0.7s ease-out both",
         "fade-up-2": "fade-up 0.7s ease-out 0.2s both",
