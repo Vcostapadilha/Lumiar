@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -67,6 +68,15 @@ app.include_router(whatsapp_router, prefix="/whatsapp")
 app.include_router(conteudo_router, prefix="/conteudo")
 app.include_router(ads_router, prefix="/ads")
 app.include_router(automacoes_router, prefix="/automacoes")
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": str(exc)},
+        headers={"Access-Control-Allow-Origin": "*"},
+    )
 
 
 @app.get("/health")
