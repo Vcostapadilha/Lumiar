@@ -6,7 +6,7 @@ from google.genai import types
 
 _client = None
 FALLBACK_MSG = "Oi! Recebi sua mensagem e vou verificar com nossa equipe. Em breve retornamos. Obrigada pelo contato com a Clinica Lumiar!"
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-3.1-flash-lite-preview"
 
 
 def _get_client():
