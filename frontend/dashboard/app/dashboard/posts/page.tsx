@@ -261,7 +261,8 @@ export default function PostsPage() {
           {posts.map((post) => {
             const conteudo = parseConteudo(post.texto_gerado);
             const expanded = expandedId === post.id;
-            const preview = conteudo.reels_com_ela || conteudo.post_story || conteudo.reels_canva || "";
+            const previewRaw = conteudo.reels_com_ela || conteudo.post_story || conteudo.reels_canva || "";
+            const preview = previewRaw.replace(/\s+/g, " ").trim().slice(0, 120);
 
             return (
               <div key={post.id} className="bg-white rounded-2xl shadow-card border border-cream-200 overflow-hidden">
