@@ -57,8 +57,13 @@ Materiais aprovados: {[m.get('titulo') for m in materiais]}
 
     if pdf_urls:
         resultado = await gemini.gerar_json_com_pdfs(PROMPT_CONTEUDO, contexto, pdf_urls)
+        if not resultado or not resultado.get("tema"):
+            resultado = await gemini.gerar_json(PROMPT_CONTEUDO, contexto)
     else:
         resultado = await gemini.gerar_json(PROMPT_CONTEUDO, contexto)
+
+    if not resultado or not resultado.get("tema"):
+        return {"status": "erro", "detalhe": "Gemini nao retornou conteudo valido"}
 
     # Salva no Supabase
     post = await db.salvar_post(resultado)
