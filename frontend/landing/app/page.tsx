@@ -90,10 +90,10 @@ function Hero() {
               className="relative rounded-3xl overflow-hidden aspect-[4/3] border-4 border-white shadow-2xl flex items-center justify-center"
               style={{ background: "linear-gradient(135deg, #C9B8E840 0%, #6DBE6D30 50%, #F9D34240 100%)" }}
             >
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/espaco1.jpg')" }} />
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/imagemlumiar1.png')" }} />
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="bg-white/70 backdrop-blur-sm rounded-xl px-3 py-1.5 text-xs text-gray-500 font-body">
-                  📸 espaco1.jpg
+                  Clínica Lumiar
                 </span>
               </div>
             </div>
@@ -276,7 +276,7 @@ function Especialidades() {
 // ── Espaço ────────────────────────────────────────────────────────────────────
 function Espaco() {
   const fotos = [
-    { src: "/images/espaco1.jpg", label: "Sala de atendimento", grad: "from-verde/30 to-lilas/30" },
+    { src: "/images/imagemlumiar1.png", label: "Sala de atendimento", grad: "from-verde/30 to-lilas/30" },
     { src: "/images/espaco2.jpg", label: "Área de integração sensorial", grad: "from-amarelo/30 to-laranja/20" },
     { src: "/images/espaco3.jpg", label: "Recepção", grad: "from-lilas/30 to-blue-200/40" },
   ];
