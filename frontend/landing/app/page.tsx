@@ -14,9 +14,9 @@ const WA_ICON = (
   </svg>
 );
 
-function WABtn({ children, className }: { children: React.ReactNode; className?: string }) {
+function WABtn({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className={className}>
+    <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className={className} style={style}>
       {children}
     </a>
   );
