@@ -148,20 +148,15 @@ function Video() {
           </div>
           <div className="flex justify-center">
             <div
-              className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl flex items-center justify-center flex-col gap-3"
-              style={{
-                width: "260px",
-                aspectRatio: "9/16",
-                background: "linear-gradient(135deg, #F5A62330, #C9B8E840, #6DBE6D30)",
-              }}
+              className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl"
+              style={{ width: "260px", aspectRatio: "9/16" }}
             >
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/video-thumb.jpg')" }} />
-              <div className="relative z-10 w-16 h-16 rounded-full bg-white/90 shadow-lg flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#F5A623">
-                  <path d="M5 3l14 9-14 9V3z" />
-                </svg>
-              </div>
-              <span className="relative z-10 text-xs text-gray-500 bg-white/70 rounded-lg px-2 py-1 font-body">Vídeo do espaço</span>
+              <video
+                src="/images/videolumiar1.mp4"
+                controls
+                playsInline
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
@@ -482,7 +477,7 @@ function CTAMeio() {
           Pronto para dar o primeiro passo?
         </h2>
         <p className="text-gray-500 font-body text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-          Cada criança recebe atenção exclusiva. Por isso não conseguimos atender a todos ao mesmo tempo. Garanta a vaga do seu filho agora.
+          Aqui, cada criança é um universo único e merece nossa presença inteira. Por isso, trabalhamos com um número planejado de crianças por horário. Isso garante que ninguém fique no 'modo espera' e que cada um receba 100% da nossa energia. O lugar do seu filho é nossa prioridade reserve agora.
         </p>
         <WABtn className="inline-flex items-center gap-3 px-8 py-4 text-white font-display font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5" style={{ background: "#25D366" }}>
           {WA_ICON}
