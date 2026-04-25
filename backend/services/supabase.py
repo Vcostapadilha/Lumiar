@@ -18,9 +18,9 @@ def get_client() -> Client:
 
 async def get_or_create_contato(telefone: str) -> dict:
     sb = get_client()
-    res = sb.table("contatos").select("*").eq("telefone", telefone).single().execute()
+    res = sb.table("contatos").select("*").eq("telefone", telefone).limit(1).execute()
     if res.data:
-        return res.data
+        return res.data[0]
     novo = sb.table("contatos").insert({
         "telefone": telefone,
         "status": "lead",
