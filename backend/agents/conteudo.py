@@ -24,6 +24,8 @@ Regras:
 - Nunca inventa dado clinico
 - Inclui disclaimer sugerido em posts clinicos
 - Tom que conecta com maes e familias, nao tecnico
+- PROIBIDO usar expressoes estigmatizantes ou reduccionistas sobre comportamento infantil como: "nao para quieto", "mundo da lua", "agitado demais", "lerdo", "bagunceiro", "fora do ritmo" — essas frases rotulam a crianca e afastam a mae
+- Fala sempre da perspectiva do cuidado e do potencial da crianca, nunca do problema ou do deficit
 
 Responda em JSON com as chaves: tema, reels_com_ela, reels_canva, post_story, hashtags, disclaimer
 """
