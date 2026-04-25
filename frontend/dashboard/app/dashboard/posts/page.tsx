@@ -25,7 +25,12 @@ type PostConteudo = {
 function stringify(val: unknown): string {
   if (!val) return "";
   if (typeof val === "string") return val;
-  if (typeof val === "object") return JSON.stringify(val, null, 2);
+  if (typeof val === "object") {
+    // Formata objeto aninhado como texto legivel
+    return Object.entries(val as Record<string, unknown>)
+      .map(([k, v]) => `${k.replace(/_/g, " ").toUpperCase()}\n${v}`)
+      .join("\n\n");
+  }
   return String(val);
 }
 
@@ -44,6 +49,42 @@ function parseConteudo(texto: string | null): PostConteudo {
   } catch {
     return { post_story: texto };
   }
+}
+
+function CopyButton({ texto }: { texto: string }) {
+  function copiar() {
+    navigator.clipboard.writeText(texto);
+  }
+  return (
+    <button
+      onClick={copiar}
+      title="Copiar"
+      className="flex-shrink-0 p-1.5 rounded-lg text-stone-warm hover:text-stone-dark hover:bg-cream-200 transition-all"
+    >
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+        <path d="M11 5V3.5C11 2.7 10.3 2 9.5 2H2.5C1.7 2 1 2.7 1 3.5V10.5C1 11.3 1.7 12 2.5 12H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    </button>
+  );
+}
+
+function SecaoConteudo({ label, texto, destaque }: { label: string; texto: string; destaque?: boolean }) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-xs font-body font-semibold text-stone-mid uppercase tracking-wider">{label}</p>
+        <CopyButton texto={texto} />
+      </div>
+      <div className={`rounded-xl px-4 py-3 border text-sm font-body leading-relaxed whitespace-pre-line ${
+        destaque
+          ? "text-sage-600 bg-sage-500 bg-opacity-5 border-sage-500 border-opacity-20"
+          : "text-stone-dark bg-cream-50 border-cream-200"
+      }`}>
+        {texto}
+      </div>
+    </div>
+  );
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -235,40 +276,23 @@ export default function PostsPage() {
                   <div className="border-t border-cream-200">
                     <div className="px-6 py-5 space-y-4">
                       {conteudo.reels_com_ela && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">Reels com você</p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.reels_com_ela}
-                          </p>
-                        </div>
+                        <SecaoConteudo label="🎬 Reels com você" texto={conteudo.reels_com_ela} />
                       )}
                       {conteudo.reels_canva && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">Reels Canva</p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.reels_canva}
-                          </p>
-                        </div>
+                        <SecaoConteudo label="🎨 Reels Canva" texto={conteudo.reels_canva} />
                       )}
                       {conteudo.post_story && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">Post / Story</p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.post_story}
-                          </p>
-                        </div>
+                        <SecaoConteudo label="📸 Post / Story" texto={conteudo.post_story} />
                       )}
                       {conteudo.hashtags && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">Hashtags</p>
-                          <p className="text-sm font-body text-sage-600 bg-sage-500 bg-opacity-5 rounded-xl px-4 py-3 border border-sage-500 border-opacity-20">
-                            {conteudo.hashtags}
-                          </p>
-                        </div>
+                        <SecaoConteudo label="# Hashtags" texto={conteudo.hashtags} destaque />
                       )}
                       {conteudo.disclaimer && (
                         <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">Disclaimer</p>
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-xs font-body font-semibold text-stone-mid uppercase tracking-wider">⚠️ Disclaimer</p>
+                            <CopyButton texto={conteudo.disclaimer} />
+                          </div>
                           <p className="text-xs font-body text-stone-warm italic leading-relaxed px-4 py-3 bg-amber-50 rounded-xl border border-amber-100">
                             {conteudo.disclaimer}
                           </p>
