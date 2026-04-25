@@ -89,11 +89,6 @@ function Hero() {
               style={{ background: "linear-gradient(135deg, #C9B8E840 0%, #6DBE6D30 50%, #F9D34240 100%)" }}
             >
               <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/heroimage.png')" }} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="bg-white/70 backdrop-blur-sm rounded-xl px-3 py-1.5 text-xs text-gray-500 font-body">
-                  Clínica Lumiar
-                </span>
-              </div>
             </div>
             <div className="absolute -bottom-4 -left-4 grid grid-cols-4 gap-1.5">
               {Array.from({ length: 16 }).map((_, i) => (
