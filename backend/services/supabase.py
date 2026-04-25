@@ -77,6 +77,36 @@ async def get_insights_semana() -> list[dict]:
     return res.data or []
 
 
+async def get_conversas_semana() -> list[dict]:
+    desde = (datetime.utcnow() - timedelta(days=7)).isoformat()
+    res = (
+        get_client()
+        .table("conversas")
+        .select("mensagem")
+        .gte("criado_em", desde)
+        .eq("papel", "user")
+        .order("criado_em", desc=False)
+        .limit(200)
+        .execute()
+    )
+    return res.data or []
+
+
+async def salvar_insights(insights: list[dict]):
+    semana = datetime.utcnow().date().isoformat()
+    sb = get_client()
+    sb.table("conversas_insights").delete().eq("semana", semana).execute()
+    if insights:
+        sb.table("conversas_insights").insert([
+            {
+                "tema_identificado": item["tema"],
+                "frequencia": item["frequencia"],
+                "semana": semana,
+            }
+            for item in insights
+        ]).execute()
+
+
 async def get_posts_recentes(dias: int = 14) -> list[dict]:
     desde = (datetime.utcnow() - timedelta(days=dias)).isoformat()
     res = (

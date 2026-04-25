@@ -25,6 +25,10 @@ async def _job_conteudo():
     await conteudo_agent.gerar_conteudo()
 
 
+async def _job_insights():
+    await conteudo_agent.gerar_insights()
+
+
 async def _job_automacoes():
     await automacoes_agent.lembrete_24h()
     await automacoes_agent.lembrete_2h()
@@ -41,6 +45,13 @@ async def lifespan(app: FastAPI):
         _job_conteudo,
         CronTrigger(hour=8, minute=0, timezone=brasilia),
         id="conteudo_diario",
+        replace_existing=True,
+    )
+    # Insights — todo domingo as 22:00 horario de Brasilia
+    scheduler.add_job(
+        _job_insights,
+        CronTrigger(day_of_week="sun", hour=22, minute=0, timezone=brasilia),
+        id="insights_semanais",
         replace_existing=True,
     )
     # Automacoes — a cada hora

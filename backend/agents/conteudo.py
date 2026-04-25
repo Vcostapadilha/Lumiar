@@ -68,6 +68,33 @@ Materiais aprovados: {[m.get('titulo') for m in materiais]}
     return {"status": "ok", "post_id": post.get("id")}
 
 
+PROMPT_INSIGHTS = """
+Analise as mensagens abaixo enviadas por familias para uma clinica de terapia infantil.
+Identifique os temas mais recorrentes e retorne JSON com a chave "insights" contendo lista de objetos:
+- "tema": nome curto do tema (ex: "suspeita de autismo", "dificuldade escolar", "agendamento")
+- "frequencia": numero de vezes que o tema apareceu (inteiro >= 1)
+
+Maximo 10 temas, ordenados do mais ao menos frequente.
+Responda APENAS com JSON valido: {"insights": [{"tema": "...", "frequencia": N}]}
+"""
+
+
+@router.post("/insights")
+async def gerar_insights():
+    conversas = await db.get_conversas_semana()
+    if not conversas:
+        return {"status": "sem_dados", "insights": 0}
+
+    texto = "\n".join(f"- {m['mensagem']}" for m in conversas)
+    resultado = await gemini.gerar_json(PROMPT_INSIGHTS, texto)
+
+    insights = resultado.get("insights", [])
+    if insights:
+        await db.salvar_insights(insights)
+
+    return {"status": "ok", "insights": len(insights)}
+
+
 def _buscar_trends() -> list[str]:
     try:
         pytrends = TrendReq(hl="pt-BR", tz=180)

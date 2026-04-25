@@ -23,12 +23,22 @@ type PostConteudo = {
 };
 
 function stringify(val: unknown): string {
-  if (!val) return "";
+  if (val === null || val === undefined || val === "") return "";
   if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (Array.isArray(val)) {
+    return val.map((item, i) => {
+      if (typeof item === "object" && item !== null) {
+        return Object.entries(item as Record<string, unknown>)
+          .map(([k, v]) => `${k.replace(/_/g, " ").toUpperCase()}: ${stringify(v)}`)
+          .join(" | ");
+      }
+      return `${i + 1}. ${stringify(item)}`;
+    }).join("\n");
+  }
   if (typeof val === "object") {
-    // Formata objeto aninhado como texto legivel
     return Object.entries(val as Record<string, unknown>)
-      .map(([k, v]) => `${k.replace(/_/g, " ").toUpperCase()}\n${v}`)
+      .map(([k, v]) => `${k.replace(/_/g, " ").toUpperCase()}\n${stringify(v)}`)
       .join("\n\n");
   }
   return String(val);
