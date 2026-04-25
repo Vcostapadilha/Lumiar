@@ -32,6 +32,14 @@ function Header() {
         className="w-full block"
         style={{ height: "clamp(160px, 35vw, 520px)" }}
       />
+      {/* Transição suave para o hero */}
+      <div
+        className="absolute bottom-0 left-0 w-full pointer-events-none"
+        style={{
+          height: "80px",
+          background: "linear-gradient(to bottom, transparent 0%, #F0E4D0 100%)",
+        }}
+      />
       <div className="absolute top-2 right-3 sm:top-4 sm:right-6 md:top-6 md:right-8">
         <WABtn className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-xs md:text-sm rounded-full transition-all shadow-md hover:shadow-lg">
           {WA_ICON}
@@ -88,7 +96,7 @@ function Hero() {
               className="relative rounded-3xl overflow-hidden aspect-[4/3] border-4 border-white shadow-2xl flex items-center justify-center"
               style={{ background: "linear-gradient(135deg, #C9B8E840 0%, #6DBE6D30 50%, #F9D34240 100%)" }}
             >
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/heroimage.png')" }} />
+              <div className="absolute inset-0" style={{ backgroundImage: "url('/images/heroimage.png')", backgroundSize: "cover", backgroundPosition: "72% center" }} />
             </div>
             <div className="absolute -bottom-4 -left-4 grid grid-cols-4 gap-1.5">
               {Array.from({ length: 16 }).map((_, i) => (
