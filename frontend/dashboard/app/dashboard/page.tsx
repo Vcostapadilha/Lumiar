@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 
 type Metricas = {
-  mensagensHoje: number;
+  conversasHoje: number;
   postsPendentes: number;
   leadsSemResposta: number;
   agendamentosHoje: number;
@@ -39,7 +39,7 @@ function MetricaCard({
 
 export default function InicioPage() {
   const [metricas, setMetricas] = useState<Metricas>({
-    mensagensHoje: 0,
+    conversasHoje: 0,
     postsPendentes: 0,
     leadsSemResposta: 0,
     agendamentosHoje: 0,
@@ -58,9 +58,9 @@ export default function InicioPage() {
 
       const [msgs, posts, leads, ags] = await Promise.all([
         supabase
-          .from("conversas")
+          .from("contatos")
           .select("id", { count: "exact", head: true })
-          .gte("criado_em", hoje.toISOString()),
+          .gte("ultima_mensagem", hoje.toISOString()),
         supabase
           .from("posts_gerados")
           .select("id", { count: "exact", head: true })
@@ -78,7 +78,7 @@ export default function InicioPage() {
       ]);
 
       setMetricas({
-        mensagensHoje: msgs.count ?? 0,
+        conversasHoje: msgs.count ?? 0,
         postsPendentes: posts.count ?? 0,
         leadsSemResposta: leads.count ?? 0,
         agendamentosHoje: ags.count ?? 0,
@@ -131,8 +131,8 @@ export default function InicioPage() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <MetricaCard
-            label="Mensagens hoje"
-            valor={metricas.mensagensHoje}
+            label="Conversas hoje"
+            valor={metricas.conversasHoje}
             cor="bg-sage-500 bg-opacity-10"
             icon={
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
