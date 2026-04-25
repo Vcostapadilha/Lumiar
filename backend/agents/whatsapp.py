@@ -173,4 +173,23 @@ async def webhook(request: Request):
         aviso = f"Atencao necessaria\nNumero: +{phone}\nMensagem: {text}\nResposta enviada: {resposta}"
         await evolution.enviar_mensagem(PROPRIETARIA_NUMBER, aviso)
 
-    return {"status": "ok"}
+    return {"status": "ok", "resposta": resposta}
+
+
+@router.get("/ultima-resposta/{telefone}")
+async def ultima_resposta(telefone: str):
+    sb = db.get_client()
+    contato = sb.table("contatos").select("id").eq("telefone", telefone).single().execute()
+    if not contato.data:
+        return {"resposta": None}
+    res = (
+        sb.table("conversas")
+        .select("mensagem")
+        .eq("contato_id", contato.data["id"])
+        .eq("papel", "assistant")
+        .order("criado_em", desc=True)
+        .limit(1)
+        .execute()
+    )
+    resposta = res.data[0]["mensagem"] if res.data else None
+    return {"resposta": resposta}

@@ -74,6 +74,18 @@ const NAV = [
       </svg>
     ),
   },
+  {
+    href: "/dashboard/testar",
+    label: "Testar Lumi",
+    exact: false,
+    icon: (active: boolean) => (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7" stroke={active ? "white" : "currentColor"} strokeWidth="1.5" />
+        <path d="M6 7C6 5.3 7.3 4 9 4C10.7 4 12 5.3 12 7C12 8.4 11.1 9.6 9.8 10L9.5 10.1V12" stroke={active ? "white" : "currentColor"} strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="9.5" cy="14" r="0.8" fill={active ? "white" : "currentColor"} />
+      </svg>
+    ),
+  },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
