@@ -25,13 +25,14 @@ function WABtn({ children, className, style }: { children: React.ReactNode; clas
 // ── Header ───────────────────────────────────────────────────────────────────
 function Header() {
   return (
-    <header className="sticky top-0 z-50 shadow-sm" style={{
-      backgroundImage: "url('/images/bannerlumiarheader.png')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}>
-      <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-end">
-        <WABtn className="flex items-center gap-2 px-5 py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-sm rounded-full transition-all shadow-md hover:shadow-lg">
+    <header className="relative w-full">
+      <img
+        src="/images/bannerlumiarheader.png"
+        alt="Clínica Lumiar — Espaço Terapêutico Infantil"
+        className="w-full h-auto block"
+      />
+      <div className="absolute top-4 right-4 md:top-6 md:right-8">
+        <WABtn className="flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-sm rounded-full transition-all shadow-md hover:shadow-lg">
           {WA_ICON}
           <span className="hidden sm:block">Falar no WhatsApp</span>
           <span className="sm:hidden">WhatsApp</span>
