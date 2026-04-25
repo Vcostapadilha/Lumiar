@@ -22,10 +22,25 @@ type PostConteudo = {
   disclaimer?: string;
 };
 
+function stringify(val: unknown): string {
+  if (!val) return "";
+  if (typeof val === "string") return val;
+  if (typeof val === "object") return JSON.stringify(val, null, 2);
+  return String(val);
+}
+
 function parseConteudo(texto: string | null): PostConteudo {
   if (!texto) return {};
   try {
-    return JSON.parse(texto);
+    const parsed = JSON.parse(texto);
+    return {
+      tema: stringify(parsed.tema),
+      reels_com_ela: stringify(parsed.reels_com_ela),
+      reels_canva: stringify(parsed.reels_canva),
+      post_story: stringify(parsed.post_story),
+      hashtags: stringify(parsed.hashtags),
+      disclaimer: stringify(parsed.disclaimer),
+    };
   } catch {
     return { post_story: texto };
   }
