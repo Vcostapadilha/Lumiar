@@ -44,14 +44,19 @@ async def gerar_conteudo():
     posts_recentes = await db.get_posts_recentes(dias=14)
     temas_usados = [p.get("tema", "") for p in posts_recentes]
 
+    pdf_urls = [m.get("arquivo_url") for m in materiais if m.get("arquivo_url")]
+
     contexto = f"""
 Tendencias de busca no RS esta semana: {trends}
 Temas recorrentes nas conversas: {insights}
 Temas ja usados nos ultimos 14 dias (nao repetir): {temas_usados}
-Materiais aprovados disponiveis: {[m.get('titulo') for m in materiais]}
+Materiais aprovados: {[m.get('titulo') for m in materiais]}
 """
 
-    resultado = await gemini.gerar_json(PROMPT_CONTEUDO, contexto)
+    if pdf_urls:
+        resultado = await gemini.gerar_json_com_pdfs(PROMPT_CONTEUDO, contexto, pdf_urls)
+    else:
+        resultado = await gemini.gerar_json(PROMPT_CONTEUDO, contexto)
 
     # Salva no Supabase
     post = await db.salvar_post(resultado)

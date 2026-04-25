@@ -1,5 +1,6 @@
 import os
 import json
+import httpx
 import google.generativeai as genai
 
 _model = None
@@ -27,6 +28,39 @@ async def responder(system_prompt: str, historico: list[dict], mensagem: str) ->
         return response.text.strip()
     except Exception:
         return FALLBACK_MSG
+
+
+async def gerar_json_com_pdfs(system_prompt: str, contexto: str, pdf_urls: list[str]) -> dict:
+    try:
+        model = _get_model()
+        partes = []
+
+        # Baixa e sobe cada PDF pro Gemini Files API
+        async with httpx.AsyncClient(timeout=30) as client:
+            for url in pdf_urls:
+                try:
+                    res = await client.get(url)
+                    if res.status_code == 200:
+                        uploaded = genai.upload_file(
+                            res.content,
+                            mime_type="application/pdf",
+                        )
+                        partes.append(uploaded)
+                except Exception:
+                    continue
+
+        prompt = f"{system_prompt}\n\nContexto adicional:\n{contexto}\n\nResponda apenas com JSON valido."
+        partes.append(prompt)
+
+        response = model.generate_content(partes)
+        text = response.text.strip()
+        if text.startswith("```"):
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+        return json.loads(text)
+    except Exception as e:
+        return {"tema": "erro", "erro": str(e)}
 
 
 async def gerar_json(system_prompt: str, contexto: str) -> dict:
