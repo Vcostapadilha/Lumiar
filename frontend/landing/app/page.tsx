@@ -25,11 +25,11 @@ function WABtn({ children, className, style }: { children: React.ReactNode; clas
 // ── Header ───────────────────────────────────────────────────────────────────
 function Header() {
   return (
-    <header className="relative w-full bg-[#F5EAD8]">
+    <header className="relative w-full">
       <img
         src="/images/bannerlumiarheader.png"
         alt="Clínica Lumiar — Espaço Terapêutico Infantil"
-        className="w-full object-contain block max-h-32 sm:max-h-40 md:max-h-52 lg:max-h-64 mx-auto"
+        className="w-full object-cover object-center block h-32 sm:h-40 md:h-52 lg:h-64"
       />
       <div className="absolute top-2 right-3 sm:top-4 sm:right-6 md:top-6 md:right-8">
         <WABtn className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-xs md:text-sm rounded-full transition-all shadow-md hover:shadow-lg">
