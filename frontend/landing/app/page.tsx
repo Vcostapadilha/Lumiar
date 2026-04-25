@@ -29,7 +29,8 @@ function Header() {
       <img
         src="/images/bannerlumiarheader.png"
         alt="Clínica Lumiar — Espaço Terapêutico Infantil"
-        className="w-full object-cover object-center block h-40 sm:h-52 md:h-64 lg:h-80"
+        className="w-full block"
+        style={{ height: "clamp(160px, 35vw, 520px)" }}
       />
       <div className="absolute top-2 right-3 sm:top-4 sm:right-6 md:top-6 md:right-8">
         <WABtn className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-3 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-xs md:text-sm rounded-full transition-all shadow-md hover:shadow-lg">
