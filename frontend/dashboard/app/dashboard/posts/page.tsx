@@ -136,6 +136,7 @@ export default function PostsPage() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [generateMsg, setGenerateMsg] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const supabase = createClient();
 
@@ -154,6 +155,14 @@ export default function PostsPage() {
   async function atualizarStatus(id: string, status: string) {
     await supabase.from("posts_gerados").update({ status }).eq("id", id);
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
+  }
+
+  async function apagarPost(id: string) {
+    setDeletingId(id);
+    await supabase.from("posts_gerados").delete().eq("id", id);
+    setPosts((prev) => prev.filter((p) => p.id !== id));
+    setDeletingId(null);
+    if (expandedId === id) setExpandedId(null);
   }
 
   async function gerarConteudo() {
@@ -327,12 +336,22 @@ export default function PostsPage() {
                       </div>
                     )}
                     {post.status !== "pendente" && (
-                      <div className="px-6 pb-5">
+                      <div className="px-6 pb-5 flex items-center justify-between">
                         <button
                           onClick={() => atualizarStatus(post.id, "pendente")}
                           className="text-xs text-stone-warm hover:text-stone-dark font-body underline transition-colors"
                         >
                           Desfazer
+                        </button>
+                        <button
+                          onClick={() => apagarPost(post.id)}
+                          disabled={deletingId === post.id}
+                          className="flex items-center gap-1.5 text-xs text-terra-500 hover:text-terra-600 font-body transition-colors disabled:opacity-50"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 4H14M5 4V2H11V4M6 7V12M10 7V12M3 4L4 14H12L13 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          {deletingId === post.id ? "Apagando..." : "Apagar"}
                         </button>
                       </div>
                     )}

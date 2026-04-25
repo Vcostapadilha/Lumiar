@@ -114,6 +114,7 @@ async def get_posts_recentes(dias: int = 14) -> list[dict]:
         .table("posts_gerados")
         .select("tema")
         .gte("criado_em", desde)
+        .eq("status", "aprovado")
         .execute()
     )
     return res.data or []
