@@ -1,299 +1,213 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 
-type Post = {
-  id: string;
-  tema: string | null;
-  tipo: string | null;
-  texto_gerado: string | null;
-  status: string;
-  criado_em: string;
+type Metricas = {
+  mensagensHoje: number;
+  postsPendentes: number;
+  leadsSemResposta: number;
+  agendamentosHoje: number;
 };
 
-type PostConteudo = {
-  tema?: string;
-  reels_com_ela?: string;
-  reels_canva?: string;
-  post_story?: string;
-  hashtags?: string;
-  disclaimer?: string;
+type Alerta = {
+  tipo: "post" | "lead";
+  descricao: string;
 };
 
-function parseConteudo(texto: string | null): PostConteudo {
-  if (!texto) return {};
-  try {
-    return JSON.parse(texto);
-  } catch {
-    return { post_story: texto };
-  }
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { label: string; class: string }> = {
-    pendente: { label: "Aguardando aprovacao", class: "bg-amber-50 text-amber-700 border-amber-200" },
-    aprovado: { label: "Aprovado", class: "bg-sage-500 bg-opacity-10 text-sage-600 border-sage-500 border-opacity-20" },
-    rejeitado: { label: "Rejeitado", class: "bg-terra-500 bg-opacity-10 text-terra-600 border-terra-500 border-opacity-20" },
-  };
-  const s = map[status] || map.pendente;
+function MetricaCard({
+  label,
+  valor,
+  cor,
+  icon,
+}: {
+  label: string;
+  valor: number;
+  cor: string;
+  icon: React.ReactNode;
+}) {
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-body font-medium border ${s.class}`}>
-      {s.label}
-    </span>
+    <div className="bg-white rounded-2xl shadow-card border border-cream-200 p-5">
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${cor}`}>
+        {icon}
+      </div>
+      <p className="text-3xl font-display text-stone-dark mb-1">{valor}</p>
+      <p className="text-xs font-body text-stone-warm">{label}</p>
+    </div>
   );
 }
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+export default function InicioPage() {
+  const [metricas, setMetricas] = useState<Metricas>({
+    mensagensHoje: 0,
+    postsPendentes: 0,
+    leadsSemResposta: 0,
+    agendamentosHoje: 0,
   });
-}
-
-export default function PostsPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [alertas, setAlertas] = useState<Alerta[]>([]);
   const [loading, setLoading] = useState(true);
-  const [generating, setGenerating] = useState(false);
-  const [generateMsg, setGenerateMsg] = useState("");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const supabase = createClient();
 
-  const fetchPosts = useCallback(async () => {
-    const { data } = await supabase
-      .from("posts_gerados")
-      .select("*")
-      .order("criado_em", { ascending: false })
-      .limit(30);
-    setPosts(data || []);
-    setLoading(false);
+  useEffect(() => {
+    async function carregar() {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      const amanha = new Date(hoje);
+      amanha.setDate(amanha.getDate() + 1);
+      const limite48h = new Date(Date.now() - 48 * 60 * 60 * 1000);
+
+      const [msgs, posts, leads, ags] = await Promise.all([
+        supabase
+          .from("conversas")
+          .select("id", { count: "exact", head: true })
+          .gte("criado_em", hoje.toISOString()),
+        supabase
+          .from("posts_gerados")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "pendente"),
+        supabase
+          .from("contatos")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "lead")
+          .lte("ultima_mensagem", limite48h.toISOString()),
+        supabase
+          .from("agendamentos")
+          .select("id", { count: "exact", head: true })
+          .gte("data_hora", hoje.toISOString())
+          .lt("data_hora", amanha.toISOString()),
+      ]);
+
+      setMetricas({
+        mensagensHoje: msgs.count ?? 0,
+        postsPendentes: posts.count ?? 0,
+        leadsSemResposta: leads.count ?? 0,
+        agendamentosHoje: ags.count ?? 0,
+      });
+
+      const novosAlertas: Alerta[] = [];
+      if ((posts.count ?? 0) > 0) {
+        novosAlertas.push({
+          tipo: "post",
+          descricao: `${posts.count} post${(posts.count ?? 0) > 1 ? "s" : ""} aguardando sua aprovacao`,
+        });
+      }
+      if ((leads.count ?? 0) > 0) {
+        novosAlertas.push({
+          tipo: "lead",
+          descricao: `${leads.count} lead${(leads.count ?? 0) > 1 ? "s" : ""} sem resposta ha mais de 48h`,
+        });
+      }
+      setAlertas(novosAlertas);
+      setLoading(false);
+    }
+
+    carregar();
   }, [supabase]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
-  async function atualizarStatus(id: string, status: string) {
-    await supabase.from("posts_gerados").update({ status }).eq("id", id);
-    setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
-  }
-
-  async function gerarConteudo() {
-    setGenerating(true);
-    setGenerateMsg("");
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || "https://lumiar-production.up.railway.app"}/conteudo/gerar`,
-        { method: "POST" }
-      );
-      if (res.ok) {
-        setGenerateMsg("Conteudo gerado com sucesso!");
-        await fetchPosts();
-      } else {
-        setGenerateMsg("Erro ao gerar conteudo. Tente novamente.");
-      }
-    } catch {
-      setGenerateMsg("Erro de conexao. Tente novamente.");
-    } finally {
-      setGenerating(false);
-      setTimeout(() => setGenerateMsg(""), 4000);
-    }
-  }
-
-  const pendentes = posts.filter((p) => p.status === "pendente").length;
+  const hora = new Date().getHours();
+  const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
 
   return (
-    <div className="p-8">
+    <div className="p-6 md:p-8 max-w-4xl">
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <h1 className="font-display text-2xl text-stone-dark mb-1">
-            Conteudo Instagram
-          </h1>
-          <p className="text-stone-warm text-sm font-body">
-            {pendentes > 0
-              ? `${pendentes} post${pendentes > 1 ? "s" : ""} aguardando sua aprovacao`
-              : "Tudo aprovado por hoje"}
-          </p>
-        </div>
-
-        <div className="flex flex-col items-end gap-2">
-          <button
-            onClick={gerarConteudo}
-            disabled={generating}
-            className="flex items-center gap-2 px-5 py-2.5 bg-sage-500 hover:bg-sage-600 disabled:bg-sage-400 text-white font-body font-medium text-sm rounded-xl shadow-warm transition-all"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={generating ? "animate-spin" : ""}>
-              {generating ? (
-                <path d="M8 2V4M8 12V14M2 8H4M12 8H14M3.5 3.5L5 5M11 11L12.5 12.5M3.5 12.5L5 11M11 5L12.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              ) : (
-                <>
-                  <path d="M8 2L8 6M8 6L6 4M8 6L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M2 9C2 11.8 4.2 14 7 14C9 14 10.8 12.8 11.6 11M14 7C14 4.2 11.8 2 9 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </>
-              )}
-            </svg>
-            {generating ? "Gerando..." : "Gerar novo conteudo"}
-          </button>
-          {generateMsg && (
-            <p className={`text-xs font-body ${generateMsg.includes("sucesso") ? "text-sage-500" : "text-terra-500"}`}>
-              {generateMsg}
-            </p>
-          )}
-        </div>
+      <div className="mb-8">
+        <h1 className="font-display text-2xl text-stone-dark mb-1">{saudacao} 🌿</h1>
+        <p className="text-stone-warm text-sm font-body">
+          {new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}
+        </p>
       </div>
 
-      {/* Lista de posts */}
+      {/* Cards */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="text-stone-warm font-body text-sm">Carregando posts...</div>
-        </div>
-      ) : posts.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-card border border-cream-200 p-16 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-cream-100 flex items-center justify-center mx-auto mb-4">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 4C14 4 8 8 8 14C8 18.4 10.8 22 14 22C17.2 22 20 18.4 20 14C20 8 14 4 14 4Z" fill="#5B8A6F" fillOpacity="0.3"/>
-            </svg>
-          </div>
-          <h3 className="font-display text-lg text-stone-dark mb-2">Nenhum post ainda</h3>
-          <p className="text-stone-warm text-sm font-body mb-6">
-            Clique em "Gerar novo conteudo" para criar o primeiro post com IA
-          </p>
-          <button
-            onClick={gerarConteudo}
-            disabled={generating}
-            className="px-6 py-2.5 bg-sage-500 hover:bg-sage-600 text-white font-body font-medium text-sm rounded-xl shadow-warm transition-all"
-          >
-            {generating ? "Gerando..." : "Gerar agora"}
-          </button>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-white rounded-2xl shadow-card border border-cream-200 p-5 animate-pulse">
+              <div className="w-10 h-10 rounded-xl bg-cream-200 mb-3" />
+              <div className="h-8 w-12 bg-cream-200 rounded mb-1" />
+              <div className="h-3 w-24 bg-cream-200 rounded" />
+            </div>
+          ))}
         </div>
       ) : (
-        <div className="space-y-4">
-          {posts.map((post) => {
-            const conteudo = parseConteudo(post.texto_gerado);
-            const expanded = expandedId === post.id;
-
-            return (
-              <div
-                key={post.id}
-                className="bg-white rounded-2xl shadow-card border border-cream-200 overflow-hidden"
-              >
-                {/* Header do card */}
-                <div className="px-6 py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <StatusBadge status={post.status} />
-                    <h3 className="font-display text-base text-stone-dark truncate">
-                      {conteudo.tema || post.tema || "Sem tema"}
-                    </h3>
-                  </div>
-                  <div className="flex items-center gap-3 ml-4 flex-shrink-0">
-                    <span className="text-xs text-stone-warm font-body hidden sm:block">
-                      {formatDate(post.criado_em)}
-                    </span>
-                    <button
-                      onClick={() => setExpandedId(expanded ? null : post.id)}
-                      className="text-stone-warm hover:text-stone-dark transition-colors p-1"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={`transition-transform ${expanded ? "rotate-180" : ""}`}>
-                        <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Conteudo expandido */}
-                {expanded && (
-                  <div className="border-t border-cream-200">
-                    <div className="px-6 py-5 space-y-5">
-                      {conteudo.reels_com_ela && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">
-                            Reels com voce
-                          </p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.reels_com_ela}
-                          </p>
-                        </div>
-                      )}
-                      {conteudo.reels_canva && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">
-                            Reels Canva
-                          </p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.reels_canva}
-                          </p>
-                        </div>
-                      )}
-                      {conteudo.post_story && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">
-                            Post / Story
-                          </p>
-                          <p className="text-sm font-body text-stone-dark leading-relaxed whitespace-pre-line bg-cream-50 rounded-xl px-4 py-3 border border-cream-200">
-                            {conteudo.post_story}
-                          </p>
-                        </div>
-                      )}
-                      {conteudo.hashtags && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">
-                            Hashtags
-                          </p>
-                          <p className="text-sm font-body text-sage-600 bg-sage-500 bg-opacity-5 rounded-xl px-4 py-3 border border-sage-500 border-opacity-20">
-                            {conteudo.hashtags}
-                          </p>
-                        </div>
-                      )}
-                      {conteudo.disclaimer && (
-                        <div>
-                          <p className="text-xs font-body font-medium text-stone-mid uppercase tracking-wider mb-2">
-                            Disclaimer sugerido
-                          </p>
-                          <p className="text-xs font-body text-stone-warm italic leading-relaxed px-4 py-3 bg-amber-50 rounded-xl border border-amber-100">
-                            {conteudo.disclaimer}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Acoes */}
-                    {post.status === "pendente" && (
-                      <div className="px-6 pb-5 flex gap-3">
-                        <button
-                          onClick={() => atualizarStatus(post.id, "aprovado")}
-                          className="flex-1 py-2.5 bg-sage-500 hover:bg-sage-600 text-white font-body font-medium text-sm rounded-xl shadow-warm transition-all"
-                        >
-                          Aprovar
-                        </button>
-                        <button
-                          onClick={() => atualizarStatus(post.id, "rejeitado")}
-                          className="flex-1 py-2.5 bg-white hover:bg-cream-100 text-terra-500 border border-terra-500 border-opacity-30 font-body font-medium text-sm rounded-xl transition-all"
-                        >
-                          Rejeitar
-                        </button>
-                      </div>
-                    )}
-                    {post.status !== "pendente" && (
-                      <div className="px-6 pb-5">
-                        <button
-                          onClick={() => atualizarStatus(post.id, "pendente")}
-                          className="text-xs text-stone-warm hover:text-stone-dark font-body underline transition-colors"
-                        >
-                          Desfazer
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <MetricaCard
+            label="Mensagens hoje"
+            valor={metricas.mensagensHoje}
+            cor="bg-sage-500 bg-opacity-10"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M2 3C2 2.4 2.4 2 3 2H15C15.6 2 16 2.4 16 3V11C16 11.6 15.6 12 15 12H6L2 16V3Z"
+                  stroke="#5B8A6F" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+            }
+          />
+          <MetricaCard
+            label="Posts pendentes"
+            valor={metricas.postsPendentes}
+            cor="bg-amber-50"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="7" stroke="#D97706" strokeWidth="1.5" />
+                <path d="M9 5V9L11 11" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            }
+          />
+          <MetricaCard
+            label="Leads sem resposta"
+            valor={metricas.leadsSemResposta}
+            cor="bg-terra-400 bg-opacity-10"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="6" r="3" stroke="#C4704A" strokeWidth="1.5" />
+                <path d="M3 16C3 13.2 5.7 11 9 11C12.3 11 15 13.2 15 16" stroke="#C4704A" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            }
+          />
+          <MetricaCard
+            label="Agendamentos hoje"
+            valor={metricas.agendamentosHoje}
+            cor="bg-blue-50"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="2" y="3" width="14" height="13" rx="2" stroke="#3B82F6" strokeWidth="1.5" />
+                <path d="M2 7H16M6 2V4M12 2V4" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            }
+          />
         </div>
       )}
+
+      {/* Alertas */}
+      <div>
+        <h2 className="font-display text-base text-stone-dark mb-3">Alertas do dia</h2>
+        {alertas.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-card border border-cream-200 p-6 text-center">
+            <p className="text-stone-warm text-sm font-body">Tudo em dia! Sem alertas por enquanto.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {alertas.map((alerta, i) => (
+              <div
+                key={i}
+                className={`flex items-center gap-3 p-4 rounded-xl border text-sm font-body ${
+                  alerta.tipo === "post"
+                    ? "bg-amber-50 border-amber-200 text-amber-700"
+                    : "bg-terra-400 bg-opacity-10 border-terra-400 border-opacity-30 text-terra-600"
+                }`}
+              >
+                <span className="text-base">{alerta.tipo === "post" ? "📝" : "👤"}</span>
+                {alerta.descricao}
+                <a
+                  href={alerta.tipo === "post" ? "/dashboard/posts" : "/dashboard/conversas"}
+                  className="ml-auto underline text-xs whitespace-nowrap"
+                >
+                  Ver agora
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
