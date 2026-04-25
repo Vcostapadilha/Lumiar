@@ -26,21 +26,11 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-laranja flex items-center justify-center flex-shrink-0 shadow-md">
-            <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
-              <path
-                d="M14 4C14 4 8 8 8 14C8 18.4 10.8 22 14 22C17.2 22 20 18.4 20 14C20 8 14 4 14 4Z"
-                fill="white"
-                fillOpacity="0.95"
-              />
-            </svg>
-          </div>
-          <div>
-            <p className="font-display font-bold text-base text-gray-900 leading-tight">Clínica Lumiar</p>
-            <p className="text-[10px] text-gray-400 font-body leading-none">Tramandaí RS</p>
-          </div>
-        </div>
+        <img
+          src="/images/lumiarlogo.png"
+          alt="Clínica Lumiar — Espaço Terapêutico Infantil"
+          className="h-11 w-auto object-contain"
+        />
 
         {/* WA #1 */}
         <WABtn className="flex items-center gap-2 px-4 py-2.5 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-body font-bold text-sm rounded-full transition-all shadow-md hover:shadow-lg">
@@ -481,11 +471,18 @@ function Localizacao() {
             </div>
           </div>
 
-          {/* Mapa placeholder */}
-          <div className="rounded-3xl overflow-hidden h-64 bg-gradient-to-br from-verde/20 to-lilas/20 flex flex-col items-center justify-center border-2 border-gray-100 shadow-md gap-2">
-            <div className="text-4xl">🗺️</div>
-            <p className="text-sm text-gray-500 font-body font-medium">Mapa da localização</p>
-            <p className="text-xs text-gray-400 font-body">Av. Protásio Alves 2161 — Tramandaí RS</p>
+          {/* Mapa Google Maps embed */}
+          <div className="rounded-3xl overflow-hidden h-64 border-2 border-gray-100 shadow-md">
+            <iframe
+              src="https://maps.google.com/maps?q=Av.+Prot%C3%A1sio+Alves+2161,+Tramanda%C3%AD,+RS,+Brasil&output=embed&z=16"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Localização Clínica Lumiar"
+            />
           </div>
         </div>
       </div>
@@ -527,16 +524,12 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-8">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        <div className="flex items-center justify-center gap-2.5 mb-3">
-          <div className="w-7 h-7 rounded-lg bg-laranja flex items-center justify-center">
-            <svg width="12" height="12" viewBox="0 0 28 28" fill="none">
-              <path
-                d="M14 4C14 4 8 8 8 14C8 18.4 10.8 22 14 22C17.2 22 20 18.4 20 14C20 8 14 4 14 4Z"
-                fill="white"
-              />
-            </svg>
-          </div>
-          <span className="font-display font-bold text-white">Clínica Lumiar</span>
+        <div className="flex items-center justify-center mb-3">
+          <img
+            src="/images/lumiarlogo.png"
+            alt="Clínica Lumiar"
+            className="h-10 w-auto object-contain rounded-lg"
+          />
         </div>
         <p className="text-xs font-body">Av. Protásio Alves 2161, Zona Nova Sul — Tramandaí RS</p>
         <p className="text-xs font-body mt-1">
